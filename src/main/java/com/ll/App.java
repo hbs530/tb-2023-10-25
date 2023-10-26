@@ -13,9 +13,10 @@ class App {
 
             if (cmd.equals("종료")) {
                 break;
+            } else if (cmd.equals("등록")) {
+                System.out.println("명언 :");
+                System.out.println("작가 :");
             }
-
-            System.out.printf("입력받은 명령어 : %s\n", cmd);
         }
     }
 }
