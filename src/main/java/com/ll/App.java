@@ -29,6 +29,10 @@ public class App {
                 actionWrite();
             } else if (cmd.equals("목록")){
                 actionList();
+            } else if (cmd.startsWith("삭제?")){
+                actionRemove(cmd);
+            } else if (cmd.startsWith("수정?")) {
+                actionModify(cmd);
             }
         }
     }
@@ -61,5 +65,56 @@ public class App {
             Quotation quotation = quotations.get(i);
             System.out.printf("%d / %s / %s\n", quotation.id, quotation.authorName, quotation.content);
         }
+    }
+
+    void actionRemove(String cmd){
+        int id = getParamAsInt(cmd, "id", 0);
+
+        if (id == 0) {
+            System.out.println("id를 정확히 입력해주세요.");
+            return; // 함수를 끝낸다.
+        }
+
+        System.out.printf("%d번 명언을 삭제합니다.\n", id);
+    }
+
+    void actionModify(String cmd) {
+        int id = getParamAsInt(cmd, "id", 0);
+
+        if (id == 0) {
+            System.out.println("id를 정확히 입력해주세요.");
+            return; // 함수를 끝낸다.
+        }
+
+        System.out.printf("%d번 명언을 수정합니다.\n", id);
+    }
+
+    int getParamAsInt(String cmd, String paramName, int defaultValue) {
+        String[] cmdBits = cmd.split("\\?", 2);
+        String queryString = cmdBits[1];
+
+        String[] queryStringBits = queryString.split("&");
+
+
+        for (int i = 0; i < queryStringBits.length; i++) {
+            String queryParamStr = queryStringBits[i];
+
+            String[] queryParamStrBits = queryParamStr.split("=", 2);
+
+            String _paramName = queryParamStrBits[0];
+            String paramValue = queryParamStrBits[1];
+
+            if (_paramName.equals(paramName)) {
+                try {
+                    // 문제가 없을 경우
+                    return Integer.parseInt(paramValue);
+                } catch (NumberFormatException e) {
+                    // 문제가 생긴 경우
+                    return defaultValue;
+                }
+            }
+        }
+
+        return defaultValue;
     }
 }
